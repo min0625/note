@@ -387,6 +387,7 @@ docker ps -a
 #   -t, --tty ## Allocate a pseudo-TTY
 #   --platform "${platform}" ## e.g. --platform "linux/amd64"
 #   -e ${env_key}=${env_value} ## set env
+#   --name ${name}
 # run
 docker run [${options}] ${repository}
 # run in background
@@ -396,7 +397,10 @@ docker run -it ${repository} ${command}
 # run ubuntu and execute bash
 docker run -it ubuntu bash
 # run mysql in background
-docker run  -p3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql
+docker run -d -p 3306:3306 -e 'MYSQL_ROOT_PASSWORD=password' mysql:5.7
+# run redis in background
+docker run -d -p 6379:6379 redis:6.2
+
 
 # docker exec
 # execute command
@@ -413,5 +417,23 @@ CREATE DATABASE `${my_db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
 -- in mysql 5.7
 CREATE DATABASE `${my_db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE DATABASE `${my_db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS `my_table`;
+CREATE TABLE IF NOT EXISTS `my_table` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `uid2` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL DEFAULT '',
+  `value2` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_uid` (`uid`),
+  UNIQUE KEY `uq_uid2` (`uid2`) USING HASH
+);
+
+SET @@session.time_zone = '+00:00';
+SET @@session.time_zone = '+08:00';
+SELECT @@session.time_zone;
 
 ```
