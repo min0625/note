@@ -172,6 +172,19 @@ mongosh --host "rs0/127.0.0.1:27017" --username "root" --password "password"
 mongosh "mongodb://${user}:${password}@${host}[${port}][/${database}][?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"]
 mongosh "mongodb://root:password@127.0.0.1:27017/?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
 
+
+# localstack
+pip install localstack
+pip uninstall localstack
+#
+localstack --version
+localstack start -d
+localstack stop
+localstack status services
+#
+# localstack use awscli
+alias aws.local='aws --endpoint-url=http://localhost:4566'
+
 ```
 
 # ES ElasticSearch
@@ -375,6 +388,23 @@ docker build . [--no-cache] [--progress=plain] [-t ${repository}] [-f ${dockerfi
 # docker image
 # show all image
 docker image ls -a
+# remove useless images
+docker image prune -a
+
+# docker volume
+# show all volume
+docker volume ls
+# remove useless volumes
+docker volume prune
+
+# docker network
+# show all network
+docker network ls
+# remove useless networks
+docker network prune
+
+# docker remove all useless resource
+docker system prune -a --volumes
 
 # docker ps
 # show all container
