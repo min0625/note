@@ -117,6 +117,7 @@ scp ${from} ${to}
 scp ${ssh_alias}:${remote_path} ${local_path}
 scp ${local_path} ${ssh_alias}:${remote_path}
 
+
 # mysql
 # official mysql client CLI
 # Install on mac:
@@ -428,6 +429,7 @@ docker run -it ${repository} ${command}
 docker run -it ubuntu bash
 # run mysql in background
 docker run -d -p 3306:3306 -e 'MYSQL_ROOT_PASSWORD=password' mysql:5.7
+docker run -d -p 3306:3306 -e 'MYSQL_ROOT_PASSWORD=password' mysql:8.0
 # run redis in background
 docker run -d -p 6379:6379 redis:6.2
 
@@ -442,14 +444,15 @@ docker exec -it ${container_id} sh
 ```sql
 -- Create Database
 -- in mysql 8.0
-CREATE DATABASE `${my_db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+CREATE DATABASE `db_name`;
+CREATE DATABASE `db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 --
 -- in mysql 5.7
-CREATE DATABASE `${my_db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE DATABASE `${my_db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE `db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE `db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
-DROP TABLE IF EXISTS `my_table`;
-CREATE TABLE IF NOT EXISTS `my_table` (
+DROP TABLE IF EXISTS `table_name`;
+CREATE TABLE IF NOT EXISTS `table_name` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `uid` varchar(255) NOT NULL,
   `uid2` varchar(255) NOT NULL,
@@ -465,5 +468,53 @@ CREATE TABLE IF NOT EXISTS `my_table` (
 SET @@session.time_zone = '+00:00';
 SET @@session.time_zone = '+08:00';
 SELECT @@session.time_zone;
+
+
+-- User Management
+SELECT `user`, `host`, `account_locked` FROM `mysql`.`user`;
+
+CREATE USER `user_name`@`localhost` IDENTIFIED BY 'password';
+CREATE USER `user_name`@`%` IDENTIFIED BY 'password';
+
+-- lock unlock user
+ALTER USER `user_name`@`%` ACCOUNT LOCK;
+ALTER USER `user_name`@`%` ACCOUNT UNLOCK;
+
+-- update password
+ALTER USER `user_name`@`localhost` IDENTIFIED BY 'password';
+
+DROP USER `user_name`@`localhost`;
+
+-- GRANT 授權
+-- show current user grant.
+SHOW GRANTS;
+-- show specified user grant.
+SHOW GRANTS FOR `user_or_role`@`localhost`;
+SHOW GRANTS FOR `user1`@`%`;
+SHOW GRANTS FOR `r_role1`@`%`;
+
+-- GRANT PRIVILEGE
+-- 使用 WITH GRANT OPTION 使用者可以將自己的權限給其他使用者
+GRANT ALL PRIVILEGES ON *.* TO `user_or_role`@`%` WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON `db_name`.`table_name` TO `user_or_role`@`%`;
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP ON *.* TO `user_or_role`@`%`;
+GRANT `r_role_name` to `user_or_role`@`%`;
+
+-- REVOKE PRIVILEGE
+-- revoke all privileges in all database from the user_or_role
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM `user_or_role`@`%`;
+REVOKE GRANT OPTION ON *.* FROM `user_or_role`@`%`;
+REVOKE ALL PRIVILEGES ON *.* FROM `user_or_role`@`%`;
+REVOKE `r_role_name` from `user_or_role`@`%`;
+
+-- ROLE
+-- role supports in mysql 8.0
+CREATE ROLE `r_role_name`;
+DROP ROLE `r_role_name`;
+-- 活化使用者的角色
+SET DEFAULT ROLE ALL TO `user_name`;
+
+-- 刷新使用者設定以套用
+FLUSH PRIVILEGES;
 
 ```
