@@ -374,6 +374,21 @@ db.getCollection("my_collection").deleteOne({
 # git log 比較兩個 tag 之間版本差異
 git log --oneline v0.6.0..v0.8.0  | grep "Merge"
 
+# 顯示最近的標籤包含 commit hash
+# output: v0.3.0-1-g2d3e6a6
+git describe
+
+# 顯示最近的標籤，如果當前位置與標籤位置相同，則只顯示標籤
+# output: v0.3.0
+# output: v0.3.0-1-g2d3e6a6
+git describe --tags
+
+# 顯示最近的標籤，去除 commit hash
+# output: v0.3.0
+git describe --abbrev=0
+
+# 顯示所有分支中最新的標籤
+git describe --tags $(git rev-list --tags --max-count=1)
 ```
 
 ## gpg
