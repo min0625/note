@@ -331,6 +331,20 @@ kubectl [-n ${namespace}] describe deployment ${deployment}
 
 ```
 
+## k9s
+```sh
+# Source: https://github.com/derailed/k9s
+# install
+brew install k9s
+
+# version
+k9s version
+
+# install with golang
+go install -tags '' -ldflags="-X 'cmd.version=v0.25.18'" github.com/derailed/k9s@v0.25.18
+
+```
+
 ## mongo
 ```js
 NumberLong(new Date());
@@ -361,6 +375,16 @@ db.getCollection("my_collection").deleteOne({
 git log --oneline v0.6.0..v0.8.0  | grep "Merge"
 
 ```
+
+## gpg
+```sh
+# install gpg2 on mac
+brew install gpg
+
+gpg --version
+
+```
+
 
 ## docker
 ```sh
