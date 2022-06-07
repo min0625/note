@@ -492,16 +492,15 @@ CREATE DATABASE `db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `table_name`;
 CREATE TABLE IF NOT EXISTS `table_name` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `uid` varchar(255) NOT NULL,
-  `uid2` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL DEFAULT '',
   `value2` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_uid` (`uid`),
-  UNIQUE KEY `uq_uid2` (`uid2`) USING HASH
+  KEY `idx_value_value2` (`value`,`value2`)
 );
 
 SET @@session.time_zone = '+00:00';
