@@ -124,7 +124,7 @@ scp ${local_path} ${ssh_alias}:${remote_path}
 #   brew install mysql-client
 #
 mysql -h ${host} -P ${port} -u ${user} --password="${password}"
-mysql -h 127.0.0.1 -P 3306 -u root --password="password"
+mysql -h 127.0.0.1 -P 3306 -u root --password='password'
 
 # mysqlsh (mysql shell)
 # official mysql advanced client CLI
@@ -133,7 +133,7 @@ mysql -h 127.0.0.1 -P 3306 -u root --password="password"
 # connect on sql mode, exit enter: "\exit"
 mysqlsh --sql "${mysql_dsn}"
 mysqlsh --sql "mysql://${user}[:${password}]@${host}[:${port}][/${database}]"
-mysqlsh --sql "mysql://root:password@127.0.0.1:3306"
+mysqlsh --sql 'mysql://root:password@127.0.0.1:3306'
 
 # mycli
 # third-party mysql client CLI
@@ -142,7 +142,7 @@ mysqlsh --sql "mysql://root:password@127.0.0.1:3306"
 #
 mycli "${mysql_dsn}"
 mycli "mysql://${user}[:${password}]@${host}[:${port}][/${database}]"
-mycli "mysql://root:password@127.0.0.1:3306"
+mycli 'mysql://root:password@127.0.0.1:3306'
 
 # mysqldump
 # options:
@@ -482,13 +482,23 @@ docker exec -it ${container_id} sh
 ## MySQL
 ```sql
 -- Create Database
+--
+-- Collation name rules:
+--   ai: accent insensitive. e.g. 'á' = 'a'
+--   as: accent sensitive. e.g. 'á' != 'a'
+--   ci: case insensitive.
+--   cs: case sensitive.
+--   bin: binary.
+--
 -- in mysql 8.0
 CREATE DATABASE `db_name`;
 CREATE DATABASE `db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+CREATE DATABASE `db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_as_cs;
 --
 -- in mysql 5.7
 CREATE DATABASE `db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE DATABASE `db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE `db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 
 DROP TABLE IF EXISTS `table_name`;
 CREATE TABLE IF NOT EXISTS `table_name` (
