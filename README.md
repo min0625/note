@@ -389,6 +389,9 @@ git describe --abbrev=0
 
 # 顯示所有分支中最新的標籤
 git describe --tags $(git rev-list --tags --max-count=1)
+
+git describe --tags --dirty --always
+
 ```
 
 ## gpg
@@ -417,6 +420,7 @@ docker push ${repository}[:${tag}]
 # docker build
 # options:
 #   --no-cache
+#   --build-arg ${arg_name}=${arg_value}
 #   --progress=plain
 #   -t ${repository}
 #   -f ${dockerfile}
@@ -476,6 +480,22 @@ docker run -d -p 6379:6379 redis:6.2
 # docker exec
 # execute command
 docker exec -it ${container_id} sh
+
+```
+
+## docker-compose
+```sh
+# run
+docker-compose up
+
+# run in the background
+docker-compose up -d
+
+# stop
+docker-compose stop
+
+# stop and remove
+docker-compose down -v
 
 ```
 
