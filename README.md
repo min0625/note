@@ -501,7 +501,8 @@ docker-compose down -v
 
 ## MySQL
 ```sql
--- Create Database
+
+-- Character Set & Collation
 --
 -- Collation name rules:
 --   ai: accent insensitive. e.g. 'á' = 'a'
@@ -509,6 +510,11 @@ docker-compose down -v
 --   ci: case insensitive.
 --   cs: case sensitive.
 --   bin: binary.
+--
+-- Set Connection Collation
+SET NAMES 'utf8mb4' COLLATE 'utf8mb4_0900_as_cs';
+
+-- Create Database
 --
 -- in mysql 8.0
 CREATE DATABASE `db_name`;
